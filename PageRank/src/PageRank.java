@@ -11,6 +11,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
 
 public class PageRank {
 
@@ -24,7 +26,7 @@ public class PageRank {
 			String cur;
 
 			HashMap<Integer, HashMap<Integer, Double>> outer = new HashMap<Integer, HashMap<Integer, Double>>();
-
+			int maxMat0 = 0,maxMat1 = 0;
 			while ((cur = br.readLine()) != null) {
 				String[] mat = cur.split(" ");
 				HashMap<Integer, Double> temp;
@@ -37,13 +39,18 @@ public class PageRank {
 				}
 
 				temp.put(Integer.parseInt(mat[0]), Double.parseDouble(mat[2]));
-
+				if (Integer.parseInt(mat[0]) > maxMat0) {
+					maxMat0 = Integer.parseInt(mat[0]);
 				}
+				if (Integer.parseInt(mat[1]) > maxMat1) {
+					maxMat1 = Integer.parseInt(mat[1]);
+				}
+			}
 			
 			br.close();
 			fr.close();
 			
-			globals.rows=outer.size();
+			globals.rows=maxMat0 >= maxMat1 ? maxMat0 : maxMat1;
 			globals.nzConst=(1-globals.dampFactor)/globals.rows;
 		
 			//Calculation for M
